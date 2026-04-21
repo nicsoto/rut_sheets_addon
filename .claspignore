@@ -1,0 +1,18 @@
+# Docs
+README.md
+DEPLOYMENT_GUIDE.md
+MARKETPLACE_CHECKLIST.md
+LISTING_COPY.md
+PRIVACY_POLICY_TEMPLATE.md
+TERMS_OF_SERVICE_TEMPLATE.md
+PAYMENT_INTEGRATION.md
+
+# Local files
+package.json
+package-lock.json
+node_modules/
+.clasp.json.example
+licensing_webhook_service/
+
+# System
+.DS_Store

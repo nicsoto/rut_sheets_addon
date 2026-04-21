@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — RUT Cleaner Chile</title>
+  <style>
+    :root {
+      --bg: #f8fafb;
+      --card: #ffffff;
+      --text: #1a2332;
+      --muted: #64748b;
+      --primary: #006f8f;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .header {
+      background: linear-gradient(135deg, #006f8f 0%, #004d63 100%);
+      color: #fff;
+      padding: 36px 24px;
+      text-align: center;
+    }
+    .header h1 { font-size: 24px; }
+    .header a { color: #cce4ea; font-size: 14px; }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    h2 {
+      font-size: 18px;
+      color: var(--primary);
+      margin-top: 28px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+    }
+    p, li { margin-bottom: 10px; }
+    ul { padding-left: 20px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    th, td {
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+    th { background: #f1f5f9; font-weight: 600; }
+    .footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .updated { color: var(--muted); font-size: 14px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Privacy Policy</h1>
+    <a href="index.html">&larr; Back to RUT Cleaner Chile</a>
+  </div>
+  <div class="container">
+    <p class="updated"><strong>Last updated:</strong> April 20, 2026</p>
+
+    <h2>1. Introduction</h2>
+    <p>RUT Cleaner Chile ("the Add-on", "we", "us") is a Google Sheets editor add-on that validates, normalizes, and deduplicates Chilean RUT (Rol Único Tributario) numbers in bulk. This Privacy Policy explains what data we access, how we use it, and your rights regarding that data.</p>
+
+    <h2>2. Data We Access and Process</h2>
+    <p>The Add-on accesses the following data <strong>only within the currently active Google Spreadsheet</strong>:</p>
+
+    <table>
+      <thead>
+        <tr><th>Data type</th><th>Purpose</th><th>Storage location</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Cell values from user-selected columns</td><td>Validate and normalize RUT numbers</td><td>Processed in memory; results written back to the same spreadsheet</td></tr>
+        <tr><td>Job state (cursor position, row counts, timestamps)</td><td>Enable pause/resume of batch processing</td><td>Google Apps Script Document Properties</td></tr>
+        <tr><td>User preferences (last used column settings)</td><td>Convenience for returning users</td><td>Google Apps Script User Properties</td></tr>
+        <tr><td>User email address</td><td>Determine license plan (Free/Trial/Pro)</td><td>Compared against Script Properties; never transmitted externally</td></tr>
+        <tr><td>Operational logs (event name, row counts, timestamps)</td><td>Diagnose errors and measure performance</td><td>Google Cloud Logging; optionally in a hidden sheet</td></tr>
+      </tbody>
+    </table>
+
+    <h2>2.1 Data We Do NOT Collect</h2>
+    <ul>
+      <li>We do <strong>not</strong> collect, store, or transmit personal identification data beyond what is described above.</li>
+      <li>We do <strong>not</strong> access spreadsheets other than the one currently open.</li>
+      <li>We do <strong>not</strong> use any data for advertising, profiling, or analytics purposes unrelated to the Add-on's operation.</li>
+      <li>We do <strong>not</strong> share, sell, or rent user data to any third party.</li>
+    </ul>
+
+    <h2>3. OAuth Scopes</h2>
+    <p>The Add-on requests the minimum scopes necessary:</p>
+    <table>
+      <thead>
+        <tr><th>Scope</th><th>Justification</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>spreadsheets.currentonly</code></td><td>Read input RUT values and write validation results in the active spreadsheet</td></tr>
+        <tr><td><code>script.container.ui</code></td><td>Display the sidebar panel for user interaction</td></tr>
+      </tbody>
+    </table>
+    <p>We do <strong>not</strong> request broad access to all spreadsheets or any scopes beyond what is strictly required.</p>
+
+    <h2>4. Data Storage and Retention</h2>
+    <ul>
+      <li><strong>Spreadsheet results</strong>: Remain in the user's spreadsheet under the user's full control. The Add-on does not maintain a separate copy.</li>
+      <li><strong>Job state and preferences</strong>: Stored in Apps Script Properties tied to the specific document and user. These can be cleared at any time using the "Limpiar estado de proceso" menu option.</li>
+      <li><strong>Operational logs</strong>: Retained according to Google Cloud Logging default retention policies (30 days). Optional sheet-based logs can be deleted by removing the hidden <code>_RUTCLEANER_LOGS</code> sheet.</li>
+    </ul>
+
+    <h2>5. Data Sharing</h2>
+    <p>We do not share any data with third parties. If the optional paid plan (Pro) is activated through a payment provider (e.g., Stripe), the payment provider handles billing data according to their own privacy policy. The Add-on only receives a confirmation of license status; it does not process payment card information.</p>
+
+    <h2>6. Security Measures</h2>
+    <ul>
+      <li>Minimum OAuth scopes to limit access surface.</li>
+      <li>All processing occurs within Google's Apps Script infrastructure.</li>
+      <li>Administrative API endpoints are protected by secret token authentication.</li>
+      <li>No sensitive data (RUT values, personal information) is included in operational logs.</li>
+    </ul>
+
+    <h2>7. Children's Privacy</h2>
+    <p>The Add-on is not directed at individuals under 13 years of age. We do not knowingly collect data from children.</p>
+
+    <h2>8. Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+      <li><strong>Access</strong>: View all data the Add-on has stored by inspecting your spreadsheet and Apps Script Properties.</li>
+      <li><strong>Deletion</strong>: Remove all Add-on data by clearing Script/Document Properties and deleting output columns.</li>
+      <li><strong>Revoke access</strong>: Remove the Add-on from your Google account at any time via <a href="https://myaccount.google.com/permissions">Google Account Permissions</a>.</li>
+    </ul>
+
+    <h2>9. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Changes will be reflected in the "Last updated" date above. Continued use of the Add-on after changes constitutes acceptance.</p>
+
+    <h2>10. Contact</h2>
+    <ul>
+      <li><strong>Provider</strong>: Nicolas Andres Soto Castro</li>
+      <li><strong>Email</strong>: nicolas.soto.c.99@gmail.com</li>
+    </ul>
+  </div>
+  <div class="footer">
+    &copy; 2026 RUT Cleaner Chile. All rights reserved.
+  </div>
+</body>
+</html>

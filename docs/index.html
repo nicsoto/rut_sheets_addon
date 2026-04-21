@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RUT Cleaner Chile — Soporte</title>
+  <style>
+    :root {
+      --bg: #f8fafb;
+      --card: #ffffff;
+      --text: #1a2332;
+      --muted: #64748b;
+      --primary: #006f8f;
+      --primary-light: #e8f4f8;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .header {
+      background: linear-gradient(135deg, #006f8f 0%, #004d63 100%);
+      color: #fff;
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .header h1 { font-size: 28px; margin-bottom: 8px; }
+    .header p { font-size: 16px; opacity: 0.9; }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card h2 { font-size: 18px; margin-bottom: 12px; color: var(--primary); }
+    .card p { color: var(--muted); margin-bottom: 8px; }
+    .card a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .card a:hover { text-decoration: underline; }
+    .links { display: grid; gap: 12px; }
+    .link-card {
+      display: block;
+      background: var(--primary-light);
+      border: 1px solid #cce4ea;
+      border-radius: 10px;
+      padding: 16px 20px;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .link-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,111,143,0.15);
+    }
+    .link-card strong { display: block; color: var(--primary); margin-bottom: 4px; }
+    .link-card span { font-size: 14px; color: var(--muted); }
+    .footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>RUT Cleaner Chile</h1>
+    <p>Add-on de Google Sheets para validar y normalizar RUT chilenos en lotes</p>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>¿Qué es RUT Cleaner Chile?</h2>
+      <p>
+        RUT Cleaner Chile es una herramienta profesional que te permite limpiar y validar miles de RUT
+        directamente en Google Sheets. Valida dígito verificador, normaliza formato, detecta duplicados
+        y genera reportes — todo sin salir de tu hoja de cálculo.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Documentos</h2>
+      <div class="links">
+        <a class="link-card" href="privacy.html">
+          <strong>Política de Privacidad</strong>
+          <span>Cómo procesamos y protegemos tus datos</span>
+        </a>
+        <a class="link-card" href="terms.html">
+          <strong>Términos de Servicio</strong>
+          <span>Condiciones de uso del add-on</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Soporte</h2>
+      <p>Para dudas, problemas o solicitudes, escríbenos a:</p>
+      <p><a href="mailto:nicolas.soto.c.99@gmail.com">nicolas.soto.c.99@gmail.com</a></p>
+      <p style="margin-top: 12px; font-size: 14px;">Tiempo de respuesta objetivo: 24-48 horas hábiles.</p>
+    </div>
+
+    <div class="card">
+      <h2>Planes</h2>
+      <p><strong>Gratis:</strong> Hasta 10.000 filas/mes. Sin costo.</p>
+      <p><strong>Trial:</strong> 7 días con límite ampliado para nuevos usuarios.</p>
+      <p><strong>Pro:</strong> Mayor capacidad y uso intensivo. Desde CLP $4.990/mes.</p>
+    </div>
+  </div>
+  <div class="footer">
+    &copy; 2026 RUT Cleaner Chile. Todos los derechos reservados.
+  </div>
+</body>
+</html>

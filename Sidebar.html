@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <style>
+      :root {
+        --bg: #f6f8fb;
+        --card: #ffffff;
+        --text: #17212b;
+        --muted: #5d6b79;
+        --primary: #006f8f;
+        --primary-soft: #e6f4f8;
+        --danger: #b42318;
+        --border: #d8e1e8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .wrap {
+        padding: 14px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+
+      h1 {
+        margin: 0 0 10px 0;
+        font-size: 16px;
+      }
+
+      h2 {
+        margin: 0 0 8px 0;
+        font-size: 13px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      label {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      input,
+      select,
+      button {
+        width: 100%;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--text);
+      }
+
+      button {
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      button.primary {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+      }
+
+      button.secondary {
+        background: var(--primary-soft);
+        border-color: #c8e3ec;
+      }
+
+      button.danger {
+        background: #fde9e7;
+        border-color: #f4c7c3;
+        color: var(--danger);
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .progress {
+        width: 100%;
+        height: 8px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: #e9eef2;
+        margin-top: 8px;
+      }
+
+      .progress > div {
+        height: 100%;
+        width: 0;
+        background: var(--primary);
+        transition: width 0.2s ease;
+      }
+
+      .meta {
+        margin-top: 8px;
+        font-size: 11px;
+        line-height: 1.45;
+        color: var(--muted);
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .msg {
+        margin-top: 8px;
+        font-size: 12px;
+        padding: 8px;
+        border-radius: 8px;
+        background: #eef7fb;
+        border: 1px solid #d3e7f0;
+      }
+
+      .msg.error {
+        background: #fdeceb;
+        border-color: #f6d0cd;
+        color: #7a271a;
+      }
+
+      .plan-chip {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: #edf6f9;
+        border: 1px solid #cce4ea;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .toggle {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .toggle input {
+        width: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>RUT Cleaner Chile</h1>
+
+        <div class="plan-chip" id="planChip">Plan: Cargando...</div>
+        <div class="meta" id="planMeta" style="margin-top: 0">-</div>
+        <div class="buttons" style="margin-top: 8px">
+          <button id="upgradeBtn" class="secondary" onclick="openUpgrade()">Ver upgrade</button>
+          <button id="refreshPlanBtn" onclick="refreshState()">Actualizar plan</button>
+        </div>
+
+        <label for="sheetName">Hoja</label>
+        <select id="sheetName"></select>
+
+        <div class="grid" style="margin-top: 8px">
+          <div>
+            <label for="inputColumn">Columna de entrada</label>
+            <input id="inputColumn" type="text" value="A" maxlength="4" />
+          </div>
+          <div>
+            <label for="outputColumn">Columna de salida inicial</label>
+            <input id="outputColumn" type="text" value="B" maxlength="4" />
+          </div>
+        </div>
+
+        <div style="margin-top: 8px">
+          <label for="batchSize">Tamano lote (100 a 3000)</label>
+          <input id="batchSize" type="number" min="100" max="3000" step="100" value="500" />
+        </div>
+
+        <div class="toggle">
+          <input id="autoContinue" type="checkbox" checked />
+          <label for="autoContinue" style="margin: 0">Auto-continuar hasta terminar</label>
+        </div>
+
+        <div class="buttons">
+          <button class="primary" id="startBtn" onclick="startJob()">Iniciar</button>
+          <button class="secondary" id="continueBtn" onclick="continueJob()">Continuar</button>
+        </div>
+
+        <div class="buttons">
+          <button class="danger" id="cancelBtn" onclick="cancelJob()">Cancelar</button>
+          <button id="refreshBtn" onclick="refreshState()">Refrescar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Estado</h2>
+        <div id="statusLabel">Sin proceso activo.</div>
+        <div class="progress"><div id="progressBar"></div></div>
+        <div class="meta" id="statusMeta">-</div>
+        <div id="message" class="msg" style="display: none"></div>
+      </div>
+    </div>
+
+    <script>
+      const STATUS = {
+        IDLE: "IDLE",
+        RUNNING: "RUNNING",
+        PAUSED: "PAUSED",
+        LIMIT_REACHED: "LIMIT_REACHED",
+        DONE: "DONE",
+        FAILED: "FAILED",
+        CANCELED: "CANCELED",
+      };
+
+      let lastJob = null;
+      let lastPlan = null;
+      let continueTimer = null;
+
+      document.addEventListener("DOMContentLoaded", init);
+
+      function init() {
+        setMessage("Cargando configuracion...", false);
+        google.script.run
+          .withSuccessHandler((state) => {
+            hydrateForm(state);
+            renderPlan(state.plan);
+            renderJob(state.currentJob);
+            setMessage("Listo.", false);
+          })
+          .withFailureHandler((error) => {
+            handleError(error);
+          })
+          .getSidebarState();
+      }
+
+      function hydrateForm(state) {
+        const sheetSelect = document.getElementById("sheetName");
+        sheetSelect.innerHTML = "";
+
+        (state.sheets || []).forEach((sheet) => {
+          const option = document.createElement("option");
+          option.value = sheet.name;
+          option.textContent = sheet.name;
+          sheetSelect.appendChild(option);
+        });
+
+        if (state.activeSheetName) {
+          sheetSelect.value = state.activeSheetName;
+        }
+
+        const defaults = state.defaults || {};
+        if (defaults.sheetName) {
+          sheetSelect.value = defaults.sheetName;
+        }
+        if (defaults.inputColumn) {
+          document.getElementById("inputColumn").value = defaults.inputColumn;
+        }
+        if (defaults.outputColumn) {
+          document.getElementById("outputColumn").value = defaults.outputColumn;
+        }
+        if (defaults.batchSize) {
+          document.getElementById("batchSize").value = defaults.batchSize;
+        }
+      }
+
+      function renderPlan(plan) {
+        lastPlan = plan || null;
+        const chip = document.getElementById("planChip");
+        const meta = document.getElementById("planMeta");
+        const upgradeBtn = document.getElementById("upgradeBtn");
+
+        if (!plan) {
+          chip.textContent = "Plan: N/D";
+          meta.textContent = "No se pudo cargar informacion de plan.";
+          upgradeBtn.disabled = true;
+          return;
+        }
+
+        chip.textContent = "Plan: " + plan.planId;
+
+        const limitText =
+          plan.monthlyRowsLimit === null || plan.monthlyRowsLimit === undefined
+            ? "Ilimitado"
+            : String(plan.monthlyRowsLimit);
+        const remainingText =
+          plan.rowsRemaining === null || plan.rowsRemaining === undefined || !Number.isFinite(plan.rowsRemaining)
+            ? "Ilimitado"
+            : String(plan.rowsRemaining);
+
+        meta.textContent =
+          "Periodo: " +
+          (plan.periodKey || "-") +
+          "\nUso mensual: " +
+          (plan.rowsUsed || 0) +
+          "\nLimite mensual: " +
+          limitText +
+          "\nDisponible: " +
+          remainingText +
+          (plan.trialEndsAt ? "\nTrial hasta: " + plan.trialEndsAt : "") +
+          "\nOrigen plan: " +
+          (plan.source || "-");
+
+        upgradeBtn.disabled = !plan.upgradeUrl;
+      }
+
+      function openUpgrade() {
+        if (!lastPlan || !lastPlan.upgradeUrl) {
+          setMessage("No hay URL de upgrade configurada.", true);
+          return;
+        }
+
+        window.open(lastPlan.upgradeUrl, "_blank");
+      }
+
+      function collectPayload() {
+        return {
+          sheetName: document.getElementById("sheetName").value,
+          inputColumn: document.getElementById("inputColumn").value.trim().toUpperCase(),
+          outputColumn: document.getElementById("outputColumn").value.trim().toUpperCase(),
+          batchSize: Number(document.getElementById("batchSize").value),
+        };
+      }
+
+      function startJob() {
+        clearTimer();
+        setBusy(true);
+        setMessage("Iniciando proceso...", false);
+
+        google.script.run
+          .withSuccessHandler((response) => {
+            setBusy(false);
+            renderJob(response);
+            maybeAutoContinue(response);
+          })
+          .withFailureHandler((error) => {
+            setBusy(false);
+            handleError(error);
+          })
+          .startRutJob(collectPayload());
+      }
+
+      function continueJob() {
+        clearTimer();
+        setBusy(true);
+        setMessage("Continuando proceso...", false);
+
+        google.script.run
+          .withSuccessHandler((response) => {
+            setBusy(false);
+            renderJob(response);
+            maybeAutoContinue(response);
+          })
+          .withFailureHandler((error) => {
+            setBusy(false);
+            handleError(error);
+          })
+          .continueRutJob();
+      }
+
+      function cancelJob() {
+        clearTimer();
+        setBusy(true);
+        setMessage("Cancelando proceso...", false);
+
+        google.script.run
+          .withSuccessHandler((response) => {
+            setBusy(false);
+            renderJob(response);
+          })
+          .withFailureHandler((error) => {
+            setBusy(false);
+            handleError(error);
+          })
+          .cancelRutJob();
+      }
+
+      function refreshState() {
+        clearTimer();
+        setBusy(true);
+        setMessage("Actualizando estado...", false);
+
+        google.script.run
+          .withSuccessHandler((state) => {
+            setBusy(false);
+            hydrateForm(state);
+            renderPlan(state.plan);
+            renderJob(state.currentJob);
+            setMessage("Estado actualizado.", false);
+          })
+          .withFailureHandler((error) => {
+            setBusy(false);
+            handleError(error);
+          })
+          .getSidebarState();
+      }
+
+      function renderJob(job) {
+        lastJob = job;
+        const statusLabel = document.getElementById("statusLabel");
+        const statusMeta = document.getElementById("statusMeta");
+        const progressBar = document.getElementById("progressBar");
+
+        if (!job) {
+          statusLabel.textContent = "Sin proceso activo.";
+          statusMeta.textContent = "-";
+          progressBar.style.width = "0%";
+          setMessage("No hay proceso corriendo.", false);
+          return;
+        }
+
+        const progress = Number(job.progressPct || 0);
+        progressBar.style.width = progress + "%";
+
+        statusLabel.textContent =
+          "Estado: " +
+          job.status +
+          " | " +
+          progress +
+          "%" +
+          " | " +
+          job.processedRows +
+          "/" +
+          job.totalRows +
+          " filas" +
+          (job.requestedRows && job.requestedRows !== job.totalRows
+            ? " (de " + job.requestedRows + " solicitadas)"
+            : "");
+
+        statusMeta.textContent =
+          "Hoja: " +
+          job.sheetName +
+          "\nEntrada: " +
+          job.inputColumn +
+          " | Salida: " +
+          job.outputColumn +
+          "\nValidos: " +
+          job.validRows +
+          " | Invalidos: " +
+          job.invalidRows +
+          "\nPlan: " +
+          (job.planId || "FREE") +
+          " | Omitidas por plan: " +
+          (job.skippedRowsByPlan || 0) +
+          "\nInicio: " +
+          (job.startedAt || "-") +
+          "\nUltima actualizacion: " +
+          (job.updatedAt || "-") +
+          (job.finishedAt ? "\nFin: " + job.finishedAt : "") +
+          (job.lastError ? "\nError: " + job.lastError : "");
+
+        if (job.message) {
+          setMessage(job.message, job.status === STATUS.FAILED);
+        }
+      }
+
+      function maybeAutoContinue(job) {
+        if (!job) {
+          return;
+        }
+
+        const autoContinue = document.getElementById("autoContinue").checked;
+        if (!autoContinue) {
+          return;
+        }
+
+        if (job.status === STATUS.RUNNING || job.status === STATUS.PAUSED) {
+          continueTimer = setTimeout(() => {
+            continueJob();
+          }, 200);
+        }
+      }
+
+      function clearTimer() {
+        if (continueTimer) {
+          clearTimeout(continueTimer);
+          continueTimer = null;
+        }
+      }
+
+      function setBusy(isBusy) {
+        ["startBtn", "continueBtn", "cancelBtn", "refreshBtn", "refreshPlanBtn"].forEach((id) => {
+          document.getElementById(id).disabled = isBusy;
+        });
+      }
+
+      function setMessage(text, isError) {
+        const messageEl = document.getElementById("message");
+        messageEl.textContent = text;
+        messageEl.style.display = "block";
+        messageEl.className = "msg" + (isError ? " error" : "");
+      }
+
+      function handleError(error) {
+        const message = error && error.message ? error.message : String(error);
+        setMessage(message, true);
+      }
+    </script>
+  </body>
+</html>
